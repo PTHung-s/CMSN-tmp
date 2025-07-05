@@ -1,0 +1,422 @@
+/* Reset margin và padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: auto; /* Cho phép scroll */
+    background-color: #000000;
+    font-family: Arial, sans-serif;
+    min-height: 100vh; /* Đảm bảo chiều cao tối thiểu */
+}
+
+/* Canvas chiếm toàn bộ màn hình */
+#bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Canvas cho hiệu ứng trái tim */
+#heartCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none; /* Cho phép click qua canvas trái tim */
+    opacity: 0.9; /* Tăng độ mờ để trái tim sáng hơn */
+    mix-blend-mode: screen; /* Tạo hiệu ứng blend sáng hơn */
+}
+
+/* Ẩn audio element */
+#music {
+    display: none;
+}
+
+/* Cursor pointer để người dùng biết có thể click */
+body {
+    cursor: pointer;
+}
+
+/* Hiệu ứng fade in khi trang load */
+body {
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Thông báo click để phát nhạc */
+.click-notice {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 20px;
+    text-align: center;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.click-notice.show {
+    opacity: 1;
+}
+
+.click-notice p {
+    margin: 0 0 10px 0;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.click-notice small {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Thông báo auto-responsive */
+.auto-responsive-notice {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 255, 0, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 11px;
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.auto-responsive-notice.show {
+    opacity: 1;
+}
+
+.auto-responsive-notice.fade-out {
+    opacity: 0;
+}
+
+/* Text trang trí sinh nhật */
+.birthday-text-container {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeInText 3s ease-in-out 2s forwards;
+}
+
+.happy-birthday-main {
+    font-size: 48px;
+    font-weight: bold;
+    color: #ff69b4;
+    text-shadow: 
+        0 0 20px #ff69b4,
+        0 0 30px #ff1493,
+        0 0 40px #ff1493,
+        0 0 50px #ff1493;
+    margin: 0 0 20px 0;
+    animation: glow 2s ease-in-out infinite alternate;
+    font-family: 'Arial Black', Arial, sans-serif;
+    letter-spacing: 3px;
+}
+
+.birthday-name {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 
+        0 0 15px #ffd700,
+        0 0 25px #ffff00,
+        0 0 35px #ffff00;
+    margin: 0 0 15px 0;
+    animation: pulse 3s ease-in-out infinite;
+    font-family: 'Arial Black', Arial, sans-serif;
+}
+
+.birth-year {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ffff;
+    text-shadow: 
+        0 0 10px #00ffff,
+        0 0 20px #0080ff,
+        0 0 30px #0080ff;
+    animation: sparkle 2s ease-in-out infinite;
+    font-family: 'Arial Black', Arial, sans-serif;
+}
+
+/* Floating texts xung quanh */
+.floating-texts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.floating-text {
+    position: absolute;
+    font-weight: bold;
+    font-family: 'Arial Black', Arial, sans-serif;
+    pointer-events: none;
+    opacity: 0.8;
+    animation: floatAround 8s linear infinite;
+}
+
+.floating-name {
+    font-size: 20px;
+    color: #ff69b4;
+    text-shadow: 0 0 10px #ff69b4;
+}
+
+.floating-year {
+    font-size: 18px;
+    color: #ffd700;
+    text-shadow: 0 0 8px #ffd700;
+}
+
+.floating-emoji {
+    font-size: 24px;
+    animation: spin 4s linear infinite, floatAround 8s linear infinite;
+}
+
+/* Thêm animations cho emoji */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Animations */
+@keyframes fadeInText {
+    0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes glow {
+    0% { text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff1493, 0 0 40px #ff1493; }
+    100% { text-shadow: 0 0 30px #ff69b4, 0 0 40px #ff1493, 0 0 50px #ff1493, 0 0 60px #ff1493; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    25% { opacity: 0.7; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); }
+    75% { opacity: 0.8; transform: scale(1); }
+}
+
+@keyframes floatAround {
+    0% { 
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { 
+        transform: translateX(100vw) translateY(-50px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Responsive cho text */
+@media (max-width: 768px) {
+    .birthday-text-container {
+        top: 15%;
+    }
+    
+    .happy-birthday-main {
+        font-size: 28px;
+        letter-spacing: 2px;
+    }
+    
+    .birthday-name {
+        font-size: 24px;
+    }
+    
+    .birth-year {
+        font-size: 18px;
+    }
+    
+    .floating-name {
+        font-size: 16px;
+    }
+    
+    .floating-year {
+        font-size: 14px;
+    }
+    
+    .floating-emoji {
+        font-size: 20px;
+    }
+}
+
+/* Responsive cho tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+    .birthday-text-container {
+        position: fixed;
+        top: 8vh;
+        left: 8%;
+        transform: none;
+        text-align: left;
+        width: 35%;
+        z-index: 10;
+    }
+    
+    .happy-birthday-main {
+        font-size: 32px !important;
+        margin: 0 0 12px 0 !important;
+    }
+    
+    .birthday-name {
+        font-size: 26px !important;
+        margin: 0 0 10px 0 !important;
+    }
+    
+    .birth-year {
+        font-size: 20px !important;
+    }
+    
+    .floating-texts {
+        left: 40%;
+        width: 60%;
+    }
+}
+
+/* Đảm bảo portrait vẫn đẹp trên tất cả thiết bị */
+@media (orientation: portrait) {
+    .birthday-text-container {
+        position: fixed !important;
+        top: 15% !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        text-align: center !important;
+        width: 90% !important;
+        z-index: 10 !important;
+    }
+    
+    .floating-texts {
+        left: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* Sửa vấn đề scroll trên mobile */
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden; /* Chỉ ẩn scroll ngang */
+        overflow-y: auto;   /* Cho phép scroll dọc */
+    }
+}
+
+/* Responsive cho mobile landscape */
+@media (max-width: 768px) and (orientation: landscape) {
+    html, body {
+        overflow: auto; /* Cho phép scroll cả 2 chiều khi landscape */
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    /* Bố trí lại text khi landscape để không che bánh kem */
+    .birthday-text-container {
+        position: fixed; /* Giữ fixed nhưng điều chỉnh vị trí */
+        top: 5vh; /* Đưa lên cao hơn */
+        left: 5%; /* Dời sang trái */
+        transform: none; /* Bỏ center transform */
+        text-align: left; /* Canh trái */
+        width: 40%; /* Chỉ chiếm 40% chiều rộng */
+        z-index: 10; /* Đảm bảo hiển thị trên cùng */
+    }
+    
+    .happy-birthday-main {
+        font-size: 24px !important; /* Nhỏ hơn để fit */
+        margin: 0 0 10px 0 !important;
+        line-height: 1.2 !important;
+    }
+    
+    .birthday-name {
+        font-size: 20px !important; /* Nhỏ hơn */
+        margin: 0 0 8px 0 !important;
+    }
+    
+    .birth-year {
+        font-size: 16px !important; /* Nhỏ hơn */
+    }
+    
+    /* Floating texts ở bên phải để không che */
+    .floating-texts {
+        position: fixed;
+        left: 50%; /* Chỉ hiển thị ở nửa bên phải */
+        width: 50%;
+        overflow: hidden;
+    }
+    
+    /* Thông báo responsive di chuyển xuống dưới */
+    .auto-responsive-notice {
+        bottom: 10px !important;
+        top: auto !important;
+        right: 10px !important;
+        font-size: 10px !important;
+        padding: 5px 8px !important;
+    }
+}
+
+/* Responsive cho mobile portrait - giữ nguyên fixed để trái tim hiển thị đẹp */
+@media (max-width: 768px) and (orientation: portrait) {
+    html, body {
+        overflow: hidden; /* Ẩn scroll để trái tim hiển thị full screen */
+    }
+    
+    .birthday-text-container {
+        position: fixed;
+        top: 15%; /* Đưa text lên cao hơn để nhìn rõ */
+    }
+}
+
+/* Canvas luôn fixed để làm background */
+#bg, #heartCanvas {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+}
+
+#heartCanvas {
+    z-index: 2 !important;
+}
